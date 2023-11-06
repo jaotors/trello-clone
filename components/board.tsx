@@ -1,29 +1,39 @@
 'use client'
 
-import { useEffect } from 'react'
-import { DragDropContext, Droppable } from 'react-beautiful-dnd'
+import {
+  DragDropContext,
+  Draggable,
+  DropResult,
+  Droppable,
+} from 'react-beautiful-dnd'
 
-import useBoardStore from '@/store/board-store'
+import useBoard from '@/hooks/use-board'
+
+import Column from './column'
 
 const Board = () => {
-  const [board, getBoard] = useBoardStore((state) => [
-    state.board,
-    state.getBoard,
-  ])
+  const { board } = useBoard()
 
-  useEffect(() => {
-    getBoard()
-  }, [getBoard])
+  const handleDragEnd = (result: DropResult) => {}
 
-  return <div>test</div>
-
-  // return (
-  //   <DragDropContext>
-  //     <Droppable droppableId='board' direction='horizontal' type='column'>
-  //       {(provided) => <div>{/* columns */}</div>}
-  //     </Droppable>
-  //   </DragDropContext>
-  // )
+  return (
+    <DragDropContext onDragEnd={handleDragEnd}>
+      <Droppable droppableId='board' direction='horizontal' type='column'>
+        {(provided, snapshot) => (
+          <div
+            className='grid grid-cols-1 md:grid-cols-3 gap-5 max-w-7xl mx-auto'
+            {...provided.droppableProps}
+            ref={provided.innerRef}
+          >
+            {Array.from(board.columns.entries()).map(([id, column], index) => (
+              <Column key={id} id={id} todos={column.todos} index={index} />
+            ))}
+            {provided.placeholder}
+          </div>
+        )}
+      </Droppable>
+    </DragDropContext>
+  )
 }
 
 export default Board

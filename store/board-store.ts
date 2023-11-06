@@ -1,6 +1,4 @@
 import { create } from 'zustand'
-import { devtools, persist } from 'zustand/middleware'
-import type {} from '@redux-devtools/extension' // required for devtools typing
 
 import { getTodosGroupedByColumn } from '@/api/getTodosGroupedByColumn'
 
@@ -9,24 +7,25 @@ type BoardState = {
   getBoard: () => void
 }
 
-const useBoardStore = create<BoardState>()(
-  devtools(
-    persist(
-      (set) => ({
-        board: {
-          columns: new Map<TypedColumn, Column>(),
-        },
-        getBoard: async () => {
-          const board = await getTodosGroupedByColumn()
+const columnTypes: TypedColumn[] = ['todo', 'inprogress', 'done']
+const defaultColumns = new Map<TypedColumn, Column>()
 
-          set({ board })
-        },
-      }),
-      {
-        name: 'board-storage',
-      }
-    )
-  )
-)
+for (const columnType of columnTypes) {
+  defaultColumns.set(columnType, {
+    id: columnType,
+    todos: [],
+  })
+}
+
+const useBoardStore = create<BoardState>()((set) => ({
+  board: {
+    columns: defaultColumns,
+  },
+  getBoard: async () => {
+    const board = await getTodosGroupedByColumn()
+
+    set({ board })
+  },
+}))
 
 export default useBoardStore
