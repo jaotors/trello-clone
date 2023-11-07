@@ -29,7 +29,6 @@ export async function POST(request: Request) {
 
     return NextResponse.json(data.choices[0].message)
   } catch (error: any) {
-    const errorData = 'You need to add payement method on OpenAI'
-    return NextResponse.json(errorData)
+    return NextResponse.json(error.response.data.error.message)
   }
 }
