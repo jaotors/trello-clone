@@ -5,6 +5,7 @@ import { getTodosGroupedByColumn } from '@/api/getTodosGroupedByColumn'
 type BoardState = {
   board: Board
   getBoard: () => void
+  setBoardState: (board: Board) => void
 }
 
 const columnTypes: TypedColumn[] = ['todo', 'inprogress', 'done']
@@ -26,6 +27,7 @@ const useBoardStore = create<BoardState>()((set) => ({
 
     set({ board })
   },
+  setBoardState: (board) => set({ board }),
 }))
 
 export default useBoardStore
