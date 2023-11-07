@@ -1,10 +1,11 @@
 import clsx from 'clsx'
 import { Draggable, Droppable } from 'react-beautiful-dnd'
 
+import useBoardStore from '@/store/board-store'
+
 import TodoCard from './todo-card'
 
 import { PlusCircleIcon } from '@heroicons/react/20/solid'
-import useBoard from '@/hooks/use-board'
 
 type Props = {
   id: TypedColumn
@@ -21,7 +22,7 @@ const labelColumn: {
 }
 
 const Column = ({ id, todos, index }: Props) => {
-  const { searchKeyword } = useBoard()
+  const searchKeyword = useBoardStore((state) => state.searchKeyword)
 
   return (
     <Draggable draggableId={id} index={index}>

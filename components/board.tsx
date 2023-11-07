@@ -1,18 +1,21 @@
 'use client'
 
-import {
-  DragDropContext,
-  Draggable,
-  DropResult,
-  Droppable,
-} from 'react-beautiful-dnd'
+import { useEffect } from 'react'
+import { DragDropContext, DropResult, Droppable } from 'react-beautiful-dnd'
 
-import useBoard from '@/hooks/use-board'
+import useBoardStore from '@/store/board-store'
 
 import Column from './column'
 
 const Board = () => {
-  const { board, setBoardState, updateTodo } = useBoard()
+  const [board, getBoard, setBoardState, updateTodo] = useBoardStore(
+    (state) => [
+      state.board,
+      state.getBoard,
+      state.setBoardState,
+      state.updateTodo,
+    ]
+  )
 
   const handleDragEnd = (result: DropResult) => {
     const { destination, source, type } = result
@@ -79,6 +82,10 @@ const Board = () => {
       }
     }
   }
+
+  useEffect(() => {
+    getBoard()
+  }, [getBoard])
 
   return (
     <DragDropContext onDragEnd={handleDragEnd}>

@@ -1,8 +1,11 @@
-import useBoard from '@/hooks/use-board'
+import useBoardStore from '@/store/board-store'
 import { MagnifyingGlassIcon } from '@heroicons/react/20/solid'
 
 const SearchForm = () => {
-  const { searchKeyword, setSearchKeyword } = useBoard()
+  const [searchKeyword, setSearchKeyword] = useBoardStore((state) => [
+    state.searchKeyword,
+    state.setSearchKeyword,
+  ])
 
   return (
     <form className='flex items-center space-x-5 bg-white rounded-md p-2 shadow-md flex-1 md:flex-initial'>

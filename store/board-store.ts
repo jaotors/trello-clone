@@ -1,6 +1,6 @@
 import { create } from 'zustand'
 
-import { getTodosGroupedByColumn } from '@/api/getTodosGroupedByColumn'
+import { getTodosGroupedByColumn } from '@/lib/getTodosGroupedByColumn'
 import { databases } from '@/appwrite'
 
 type BoardState = {
