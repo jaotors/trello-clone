@@ -1,11 +1,13 @@
 import { create } from 'zustand'
 
 import { getTodosGroupedByColumn } from '@/api/getTodosGroupedByColumn'
+import { databases } from '@/appwrite'
 
 type BoardState = {
   board: Board
   getBoard: () => void
   setBoardState: (board: Board) => void
+  updateTodo: (todo: Todo, columnId: TypedColumn) => void
 }
 
 const columnTypes: TypedColumn[] = ['todo', 'inprogress', 'done']
@@ -28,6 +30,17 @@ const useBoardStore = create<BoardState>()((set) => ({
     set({ board })
   },
   setBoardState: (board) => set({ board }),
+  updateTodo: async (todo, columnId) => {
+    await databases.updateDocument(
+      process.env.NEXT_PUBLIC_DATABASE_ID!,
+      process.env.NEXT_PUBLIC_TODOS_COLLECTION_ID!,
+      todo.$id,
+      {
+        title: todo.title,
+        status: columnId,
+      }
+    )
+  },
 }))
 
 export default useBoardStore
