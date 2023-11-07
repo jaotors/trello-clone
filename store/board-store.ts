@@ -8,6 +8,8 @@ type BoardState = {
   getBoard: () => void
   setBoardState: (board: Board) => void
   updateTodo: (todo: Todo, columnId: TypedColumn) => void
+  searchKeyword: string
+  setSearchKeyword: (searchKeyword: string) => void
 }
 
 const columnTypes: TypedColumn[] = ['todo', 'inprogress', 'done']
@@ -41,6 +43,8 @@ const useBoardStore = create<BoardState>()((set) => ({
       }
     )
   },
+  searchKeyword: '',
+  setSearchKeyword: (keyword) => set({ searchKeyword: keyword }),
 }))
 
 export default useBoardStore

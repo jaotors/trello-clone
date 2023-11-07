@@ -2,7 +2,8 @@
 
 import Image from 'next/image'
 import Avatar from 'react-avatar'
-import { MagnifyingGlassIcon, UserCircleIcon } from '@heroicons/react/20/solid'
+import { UserCircleIcon } from '@heroicons/react/20/solid'
+import SearchForm from './search-form'
 
 const Header = () => {
   return (
@@ -18,13 +19,7 @@ const Header = () => {
         />
 
         <div className='flex items-center space-x-5 flex-1 justify-end w-full'>
-          <form className='flex items-center space-x-5 bg-white rounded-md p-2 shadow-md flex-1 md:flex-initial'>
-            <MagnifyingGlassIcon className='h-6 w-6 text-gray-400' />
-            <input type='text' placeholder='Search' className='flex-1 p-2' />
-            <button type='submit' hidden>
-              Search
-            </button>
-          </form>
+          <SearchForm />
           <Avatar name='Jao Turingan' round size='50' color='#0055d1' />
         </div>
       </div>
