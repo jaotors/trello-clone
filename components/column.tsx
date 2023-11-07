@@ -56,6 +56,7 @@ const Column = ({ id, todos, index }: Props) => {
                           key={todo.$id}
                           todo={todo}
                           id={id}
+                          index={index}
                           innerRef={provided.innerRef}
                           draggableProps={provided.draggableProps}
                           dragHandleProps={provided.dragHandleProps}
