@@ -1,14 +1,14 @@
+type Image = {
+  bucketId: string
+  fileId: string
+}
+
 type Todo = {
   $id: string
   $createdAt: string
   title: string
   status: TypedColumn
-  image?: string
-}
-
-type Image = {
-  bucketId: string
-  fileId: string
+  image?: Image
 }
 
 type TypedColumn = 'todo' | 'inprogress' | 'done'

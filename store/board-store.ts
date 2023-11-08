@@ -1,7 +1,7 @@
 import { create } from 'zustand'
 
 import { getTodosGroupedByColumn } from '@/lib/getTodosGroupedByColumn'
-import { databases } from '@/appwrite'
+import { databases, storage } from '@/appwrite'
 
 type BoardState = {
   board: Board
@@ -10,21 +10,12 @@ type BoardState = {
   updateTodo: (todo: Todo, columnId: TypedColumn) => void
   searchKeyword: string
   setSearchKeyword: (searchKeyword: string) => void
+  deleteTodo: (taskIndex: number, todo: Todo, id: TypedColumn) => void
 }
 
-const columnTypes: TypedColumn[] = ['todo', 'inprogress', 'done']
-const defaultColumns = new Map<TypedColumn, Column>()
-
-for (const columnType of columnTypes) {
-  defaultColumns.set(columnType, {
-    id: columnType,
-    todos: [],
-  })
-}
-
-const useBoardStore = create<BoardState>()((set) => ({
+const useBoardStore = create<BoardState>()((set, get) => ({
   board: {
-    columns: defaultColumns,
+    columns: new Map<TypedColumn, Column>(),
   },
   getBoard: async () => {
     const board = await getTodosGroupedByColumn()
@@ -45,6 +36,23 @@ const useBoardStore = create<BoardState>()((set) => ({
   },
   searchKeyword: '',
   setSearchKeyword: (keyword) => set({ searchKeyword: keyword }),
+  deleteTodo: async (taskIndex: number, todo: Todo, id: TypedColumn) => {
+    const newColumns = new Map(get().board.columns)
+
+    newColumns.get(id)?.todos.splice(taskIndex, 1)
+
+    set({ board: { columns: newColumns } })
+
+    if (todo.image) {
+      await storage.deleteFile(todo.image.bucketId, todo.image.fileId)
+    }
+
+    await databases.deleteDocument(
+      process.env.NEXT_PUBLIC_DATABASE_ID!,
+      process.env.NEXT_PUBLIC_TODOS_COLLECTION_ID!,
+      todo.$id
+    )
+  },
 }))
 
 export default useBoardStore

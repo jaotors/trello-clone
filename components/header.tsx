@@ -2,6 +2,7 @@
 
 import Image from 'next/image'
 import Avatar from 'react-avatar'
+
 import SearchForm from './search-form'
 import GPTSuggestion from './gpt-suggestion'
 
