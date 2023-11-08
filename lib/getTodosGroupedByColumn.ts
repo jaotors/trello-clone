@@ -29,6 +29,15 @@ export const getTodosGroupedByColumn = async () => {
 
   const columnTypes: TypedColumn[] = ['todo', 'inprogress', 'done']
 
+  for (const columnType of columnTypes) {
+    if (!columns.get(columnType)) {
+      columns.set(columnType, {
+        id: columnType,
+        todos: [],
+      })
+    }
+  }
+
   // sorting columns by columnTypes
   const sortedColumns = new Map(
     Array.from(columns.entries()).sort(
