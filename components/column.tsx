@@ -2,6 +2,7 @@ import clsx from 'clsx'
 import { Draggable, Droppable } from 'react-beautiful-dnd'
 
 import useBoardStore from '@/store/board-store'
+import useModalStore from '@/store/modal-store'
 
 import TodoCard from './todo-card'
 
@@ -23,6 +24,7 @@ const labelColumn: {
 
 const Column = ({ id, todos, index }: Props) => {
   const searchKeyword = useBoardStore((state) => state.searchKeyword)
+  const openModal = useModalStore((state) => state.openModal)
 
   return (
     <Draggable draggableId={id} index={index}>
@@ -88,7 +90,10 @@ const Column = ({ id, todos, index }: Props) => {
                   {provided.placeholder}
 
                   <div className='flex items-end justify-end p-2'>
-                    <button className='text-green-500 hover:text-green-600'>
+                    <button
+                      className='text-green-500 hover:text-green-600'
+                      onClick={openModal}
+                    >
                       <PlusCircleIcon className='h-10 w-10' />
                     </button>
                   </div>

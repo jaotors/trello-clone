@@ -8,9 +8,13 @@ type BoardState = {
   getBoard: () => void
   setBoardState: (board: Board) => void
   updateTodo: (todo: Todo, columnId: TypedColumn) => void
+  deleteTodo: (taskIndex: number, todo: Todo, id: TypedColumn) => void
+  newTodoInput: string
+  setNewTodoInput: (input: string) => void
+  newTaskType: TypedColumn
+  setNewTaskType: (columnId: TypedColumn) => void
   searchKeyword: string
   setSearchKeyword: (searchKeyword: string) => void
-  deleteTodo: (taskIndex: number, todo: Todo, id: TypedColumn) => void
 }
 
 const useBoardStore = create<BoardState>()((set, get) => ({
@@ -53,6 +57,10 @@ const useBoardStore = create<BoardState>()((set, get) => ({
       todo.$id
     )
   },
+  newTodoInput: '',
+  setNewTodoInput: (input: string) => set({ newTodoInput: input }),
+  newTaskType: 'todo',
+  setNewTaskType: (columnId: TypedColumn) => set({ newTaskType: columnId }),
 }))
 
 export default useBoardStore
